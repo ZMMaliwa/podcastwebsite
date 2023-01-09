@@ -1,0 +1,13 @@
+:root {
+    --primary-blue: #1D84B5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+    margin: 0;
+    background: #EEE;
+}
