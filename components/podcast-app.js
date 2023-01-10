@@ -15,7 +15,7 @@ class Component extends LitElement {
     }
 
     /**
-     * @param {import('../types').state} state 
+     * @param {import('../types').state} state
      */
     storeChange = (state) => {
         if (this.phase === state.phase) return
@@ -25,7 +25,7 @@ class Component extends LitElement {
     disconnectedCallback() { store.unsubscribe(this.storeChange) }
 
     render() {
-        const loadSingleHandler = () => store.loadSingle('10182')
+        // const loadSingleHandler = () => store.loadSingle('10182')
         const loadListHandler = () => store.loadList()
 
         if (this.phase === 'loading') {
@@ -39,7 +39,6 @@ class Component extends LitElement {
         if (this.phase === 'list') {
             return html`
                 <div>
-                    <button @click="${loadSingleHandler}">Go to single</button>
                     <podcast-view-list></podcast-view-list>
                 </div>
             `

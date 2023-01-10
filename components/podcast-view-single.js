@@ -12,9 +12,14 @@ class Component extends LitElement {
         super()
 
         this.disconnectStore = connect((state) => {
-            if (this.single === state.single) return
-            this.single = state.single
-        })
+            if (this.single === state.single) return;
+            this.single = state.single;
+            if (this.season?.toString() === state.season.toString()) return;
+            this.season = state.season;
+            if (this.previews !== state.previews) { this.previews = state.previews; }
+            if (this.sorting !== state.sorting) { this.sorting = state.sorting; }
+            if (this.search !== state.search) { this.search = state.search; }
+        });
     }
 
     disconnectedCallback() { this.disconnectStore() }
@@ -30,16 +35,33 @@ class Component extends LitElement {
         }
     `;
 
-    render() {
+    render () {
+
+        const previews = this.previews;
+
+        const filteredPreviews = previews.filter(item => {
+            if (!this.search) return true;
+            return item.title.toLowerCase().includes(this.search.toLowerCase());
+        });
+
         /**
          * @type {import('../types').show}
          */
         const show = this.single
-        if (!show) { 
+        if (!show) {
             return html`<div></div>`
         }
 
         const backHandler = () => store.loadList()
+        const handleClick = async (event) => {
+            await store.renderSeason(event.target.dataset.season);
+        };
+
+        const seasonsTitle = show.seasons.map(({ season }) => {
+            return html`
+                <a @click="${ handleClick }" data-season="${ season }">Season ${ season }</a>
+            `;
+        });
 
         const seasons = show.seasons.map(({ episodes, title }) => {
             return html`
@@ -50,7 +72,7 @@ class Component extends LitElement {
                             <div>
                                 <div>${innerTitle}</div>
                                 <audio controls>
-                                    <source src="https://file-examples.com/storage/fe8c7eef0c6364f6c9504cc/2017/11/file_example_MP3_700KB.mp3" type="audio/mp3">
+                                    <source src="${file}" type="audio/mp3">
                                 </audio>
                             </div>
                         `
