@@ -50,7 +50,7 @@ class Component extends LitElement {
             margin-bottom: 0.5rem;
             color: white;
             outline: none;
-            border-radius: 5%;
+            border-style: none;
             font-size: 100%
         }
         .gen {
